@@ -25,7 +25,7 @@ namespace CommunityToolShedMvc.Controllers
             ",
                 new SqlParameter("@Id", id));
 
-            return View();
+            return View(community);
         }
     }
 }
