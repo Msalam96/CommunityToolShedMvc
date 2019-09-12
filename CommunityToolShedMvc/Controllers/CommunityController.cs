@@ -86,7 +86,7 @@ namespace CommunityToolShedMvc.Controllers
 
         public ActionResult Join()
         {
-
+      
             return View();
         }
     }
