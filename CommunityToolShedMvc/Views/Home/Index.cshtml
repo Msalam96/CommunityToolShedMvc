@@ -4,22 +4,28 @@
     ViewBag.Title = "Index";
 }
 
-<h2 class="text-center display-2 ">My Communities 🏘 </h2>
+<h2>My Communities ⛺</h2>
 
-<table class="table table-striped table-bordered table-hover table-sm" >
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Community Name</th>
-            <th>&nbsp;</th>
-        </tr>
-    </thead>
-    @foreach(var community in Model)
-    {
-        <tr>
-            <td scope="col">@community.CommunityName</td>
-            <td>
-                @Html.ActionLink("Details", "Index", "Community", new { id = community.Id }, null)
-            </td>
-        </tr>
-    }
-</table>
+<div style="width: 35%">
+    <table class="table table-striped table-bordered table-hover table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Community Name</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        @foreach (var community in Model)
+        {
+            <tr>
+                <td scope="col">@community.CommunityName</td>
+                <td>
+                    @Html.ActionLink("Details", "Index", "Community", new { id = community.Id }, null) 🔎
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+@Html.ActionLink("CREATE A COMMUNITY", "Create", "Community")
+@Html.ActionLink("JOIN A COMMUNITY", "Join", "Community")

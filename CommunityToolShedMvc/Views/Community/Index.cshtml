@@ -4,5 +4,25 @@
     ViewBag.Title = "Index";
 }
 
-<h2>@Model.CommunityName</h2>
+<h2 class="text-center">@Model.CommunityName</h2>
+<h3 class="text-center">Owned by: @Model.OwnerName</h3>
+
+<h3>Community Toolbox 🧰</h3>
+
+<div style="width: 30%">
+    <table class="table table-striped table-bordered table-hover table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Item</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.Tools)
+        {
+            <tr>
+                <td scope="col">@item.OwnerName's @item.ItemName</td>
+            </tr>
+        }
+    </table>
+</div>
+
 
