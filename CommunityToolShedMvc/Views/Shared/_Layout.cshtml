@@ -26,10 +26,10 @@
                 @if (Request.IsAuthenticated)
                 {
                     <div class="navbar-text navbar-right">
-                        <span>Welcome @(((CommunityToolShedMvc.Security.CustomPrincipal)User).Person.FirstName) @(((CommunityToolShedMvc.Security.CustomPrincipal)User).Person.LastName)! </span>
+                        <span>Welcome @(((CommunityToolShedMvc.Security.CustomPrincipal)User).Person.FirstName)! </span>
                         @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { style = "display: inline" }))
                         {
-                            <button class="btn btn-danger" type="submit">Logout</button>
+                            <button class="btn btn-danger btn-sm" type="submit">Logout</button>
                         }
                     </div>
                 }  
