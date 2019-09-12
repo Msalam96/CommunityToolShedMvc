@@ -19,13 +19,13 @@ namespace CommunityToolShedMvc.Controllers
                 Select c.[Open], c.CommunityName, 
                 p.FirstName + ' ' + LastName as OwnerName 
                 from Community c
-                join on Person p
-                    where p.Id = c.OwnerId
+                join Person p
+                    on    p.Id = c.OwnerId
                 where c.Id = @Id
             ",
                 new SqlParameter("@Id", id));
 
-            return View();
+            return View(community);
         }
     }
 }
