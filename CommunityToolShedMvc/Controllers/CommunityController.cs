@@ -17,7 +17,7 @@ namespace CommunityToolShedMvc.Controllers
         public ActionResult Index(int id)
         {
             Community community = DatabaseHelper.RetrieveSingle<Community>(@"
-                select c.[Open], c.CommunityName, 
+                select c.Id, c.[Open], c.CommunityName, 
                 p.FirstName + ' ' + LastName as OwnerName 
                 from Community c
                 join Person p

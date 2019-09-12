@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolShedMvc.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,5 +14,18 @@ namespace CommunityToolShedMvc.Controllers
         {
             return View();
         }
+
+        public ActionResult Create(int communityid)
+        {
+            Tool tool = new Tool();
+            return View(tool);
+        }
+
+        [HttpPost]
+        public ActionResult Create(FormCollection collection, int communityid)
+        {
+            return View();
+        }
+        
     }
 }
