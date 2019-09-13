@@ -24,6 +24,12 @@ namespace CommunityToolShedMvc.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection collection, int communityid)
         {
+            Tool tool = new Tool();
+            tool.ItemName = collection.Get("ItemName");
+            tool.Usage = collection.Get("Usage");
+            tool.Usage = collection.Get("Warning");
+            tool.Usage = collection.Get("Age");
+
             return View();
         }
         
