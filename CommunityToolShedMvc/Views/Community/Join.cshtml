@@ -12,13 +12,27 @@
             <tr>
                 <th scope="col">Community Name</th>
                 <th>&nbsp;</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         @foreach (var community in Model)
         {
             <tr>
                 <td scope="col">@community.CommunityName</td>
+                <td scope="col">
+                    @using (Html.BeginForm("Index", "Community", new { id = community.Id }, FormMethod.Post))
+                    {
+                        <button class="btn btn-primary" type="submit">Details</button>
+                    }
+                </td>
+                <td scope="col">
+                    @using (Html.BeginForm("joinCommunity", "Community", new { id = community.Id }, FormMethod.Post))
+                    {
+                        <button class="btn btn-primary" type="submit">Join</button>
+                    }
+                </td>
             </tr>
+            
         }
     </table>
 </div>
