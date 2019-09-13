@@ -13,7 +13,6 @@ namespace CommunityToolShedMvc.Controllers
     public class CommunityController : Controller
     {
         // GET: Community
-
         public ActionResult Index(int id)
         {
             Community community = DatabaseHelper.RetrieveSingle<Community>(@"
@@ -141,19 +140,55 @@ namespace CommunityToolShedMvc.Controllers
  
         }
 
+        [HttpGet]
         public ActionResult Join()
         {
             List<Community> communities = new List<Community>();
             CustomPrincipal currentUser = (CustomPrincipal)User;
 
             communities = DatabaseHelper.Retrieve<Community>(@"
-                select c.CommunityName
+                select c.CommunityName, c.Id
                 from Community c
-                where c.OwnerId != @Id
+                left join PersonCommunity pc 
+                on pc.CommunityId = c.Id and pc.PersonId = @PersonId
+                where pc.Id is null 
             ",
-               new SqlParameter("@Id", currentUser.Person.Id));
+               new SqlParameter("@PersonId", currentUser.Person.Id));
 
             return View(communities);
+        }
+
+        public ActionResult joinCommunity(int id)
+        {
+            CustomPrincipal currentUser = (CustomPrincipal)User;
+
+            DatabaseHelper.Insert(@"
+                insert PersonCommunity (
+                    PersonId,
+                    CommunityId
+                ) values (
+                    @PersonId,
+                    @CommunityId
+                )
+            ",
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", id));
+
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    1
+                )
+            ",
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", id));
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
