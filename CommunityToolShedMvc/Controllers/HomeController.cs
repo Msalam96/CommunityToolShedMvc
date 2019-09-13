@@ -16,10 +16,11 @@ namespace CommunityToolShedMvc.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            Person person = new Person();
             CustomPrincipal currentUser = (CustomPrincipal)User;
-            List<Community> communities = new List<Community>();
+            //List<Community> communities = new List<Community>();
 
-            communities = DatabaseHelper.Retrieve<Community>(@"
+            person.Communities = DatabaseHelper.Retrieve<Community>(@"
                     select c.Id, c.[Open], c.CommunityName, c.OwnerId
                     from PersonCommunity pC
                         join Community c
@@ -30,7 +31,19 @@ namespace CommunityToolShedMvc.Controllers
                 ", 
                     new SqlParameter("@Email", User.Identity.Name));
 
-            return View(communities);
+            person.BorrowedTools = DatabaseHelper.Retrieve<Tool>(@"
+                select i.ItemName
+                from Borrow b
+                    join CommunityItems ci
+	                on ci.Id = b.CommunityItemId
+	                join Item i
+	                on ci.ItemId = i.Id
+	                where b.BorrowerId = @Id
+                ", 
+                    new SqlParameter("@Id", currentUser.Person.Id));
+            
+            return View(person);
+
         }
 
     }

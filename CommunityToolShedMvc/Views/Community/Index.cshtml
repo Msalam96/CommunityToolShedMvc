@@ -4,6 +4,7 @@
     ViewBag.Title = "Index";
 }
 
+
 <h2 class="text-center">@Model.CommunityName</h2>
 <h3 class="text-center">Owned by: @Model.OwnerName</h3>
 
@@ -27,16 +28,28 @@
                 <td scope="col">@item.Usage</td>
                 <td scope="col">@item.Warning</td>
                 <td scope="col">@item.Age</td>
-                <td>
-                    @using (Html.BeginForm("Borrow", "Tool", new { communityid = Model.Id, id = item.Id }, FormMethod.Post))
-                    {
-                        <button class="btn btn-primary" type="submit">Borrow</button>
-                    }
-                </td>
+                @if (((CommunityToolShedMvc.Security.CustomPrincipal)User).Person.Id == item.OwnerId)
+                {
+                    <td scope="col">
+                        @using (Html.BeginForm("Remove", "Tool", new { communityid = Model.Id, id = item.Id }, FormMethod.Post))
+                        {
+                            <button class="btn btn-primary btn-sm" type="submit">Remove</button>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td scope="col">
+                        @using (Html.BeginForm("Borrow", "Tool", new { communityid = Model.Id, id = item.Id }, FormMethod.Post))
+                        {
+                            <button class="btn btn-primary btn-sm" type="submit">Borrow</button>
+                        }
+                    </td>
+                }
             </tr>
         }
     </table>
-    @Html.ActionLink("ADD A ITEM", "Create", "Tool", new { communityid = Model.Id }, null)
+    @Html.ActionLink("ADD A ITEM", "Create", "Tool", new { communityid = Model.Id }, new { @class = "btn btn-info" })
 </div>
 
 

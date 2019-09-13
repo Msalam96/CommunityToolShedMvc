@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace CommunityToolShedMvc.Controllers
 {
+    [Authorize]
     public class ToolController : Controller
     {
         // GET: Tool
@@ -97,6 +98,18 @@ namespace CommunityToolShedMvc.Controllers
 
             //return RedirectToAction("Index", "Community", new { id = communityid });
             return RedirectToRoute("Default", new { controller = "Community", action = "Index", id = communityid});
+        }
+
+        public ActionResult Remove(int communityid, int id)
+        {
+            DatabaseHelper.Update(@"
+            delete from CommunityItems
+            where ItemId = @ItemId and CommunityId = @CommunityId
+            ",
+                new SqlParameter("@ItemId", id),
+                new SqlParameter("@CommunityId", communityid));
+
+            return RedirectToRoute("Default", new { controller = "Community", action = "Index", id = communityid });
         }
     }
 }
