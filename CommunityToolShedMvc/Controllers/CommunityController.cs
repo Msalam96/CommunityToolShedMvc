@@ -81,7 +81,64 @@ namespace CommunityToolShedMvc.Controllers
                 new SqlParameter("@PersonId", currentUser.Person.Id),
                 new SqlParameter("@CommunityId", communityId));
 
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    1
+                )
+            ", 
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", communityId));
+
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    2
+                )
+            ",
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", communityId));
+
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    3
+                )
+            ",
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", communityId));
+
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    4
+                )
+            ",
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", communityId));
+
             return RedirectToAction("Index", "Home");
+ 
         }
 
         public ActionResult Join()
