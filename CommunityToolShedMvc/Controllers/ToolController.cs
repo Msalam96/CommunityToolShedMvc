@@ -70,5 +70,33 @@ namespace CommunityToolShedMvc.Controllers
             return RedirectToAction("Index", "Community", new { id = communityid });
         }
         
+        public ActionResult Borrow(int communityid, int id)
+        {
+            int communityitemId = DatabaseHelper.ExecuteScalar<int>(@"
+                select ci.id
+                from CommunityItems ci
+                where ci.ItemId = @ItemId and ci.CommunityId = @CommunityId
+            ",
+                new SqlParameter("@ItemId", id),
+                new SqlParameter("@CommunityId", communityid));
+
+            DatabaseHelper.Insert(@"
+                    insert Borrow (
+                        CommunityItemId,  
+                        BorrowerId,
+                        DateRequested
+                    ) values (
+                        @CommunityItemId,  
+                        @BorrowerId,
+                        @DateRequested  
+                    )
+                ",
+                    new SqlParameter("CommunityItemId", communityitemId),
+                    new SqlParameter("BorrowerId", ((CustomPrincipal)User).Person.Id),
+                    new SqlParameter("DateRequested", DateTime.Now));
+
+            //return RedirectToAction("Index", "Community", new { id = communityid });
+            return RedirectToRoute("Default", new { controller = "Community", action = "Index", id = communityid});
+        }
     }
 }
