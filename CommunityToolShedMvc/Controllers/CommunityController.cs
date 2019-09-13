@@ -17,7 +17,7 @@ namespace CommunityToolShedMvc.Controllers
         public ActionResult Index(int id)
         {
             Community community = DatabaseHelper.RetrieveSingle<Community>(@"
-                select c.[Open], c.CommunityName, 
+                select c.Id, c.[Open], c.CommunityName, 
                 p.FirstName + ' ' + LastName as OwnerName 
                 from Community c
                 join Person p
@@ -81,13 +81,79 @@ namespace CommunityToolShedMvc.Controllers
                 new SqlParameter("@PersonId", currentUser.Person.Id),
                 new SqlParameter("@CommunityId", communityId));
 
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    1
+                )
+            ", 
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", communityId));
+
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    2
+                )
+            ",
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", communityId));
+
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    3
+                )
+            ",
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", communityId));
+
+            DatabaseHelper.Insert(@"
+                Insert PersonRole (
+                    PersonId,
+                    CommunityId,  
+                    RoleId
+                ) values (
+                    @PersonId,
+                    @CommunityId,  
+                    4
+                )
+            ",
+                new SqlParameter("@PersonId", currentUser.Person.Id),
+                new SqlParameter("@CommunityId", communityId));
+
             return RedirectToAction("Index", "Home");
+ 
         }
 
         public ActionResult Join()
         {
-      
-            return View();
+            List<Community> communities = new List<Community>();
+            CustomPrincipal currentUser = (CustomPrincipal)User;
+
+            communities = DatabaseHelper.Retrieve<Community>(@"
+                select c.CommunityName
+                from Community c
+                where c.OwnerId != @Id
+            ",
+               new SqlParameter("@Id", currentUser.Person.Id));
+
+            return View(communities);
         }
     }
 }
