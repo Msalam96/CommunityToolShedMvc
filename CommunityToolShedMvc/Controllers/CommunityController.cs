@@ -143,8 +143,17 @@ namespace CommunityToolShedMvc.Controllers
 
         public ActionResult Join()
         {
-      
-            return View();
+            List<Community> communities = new List<Community>();
+            CustomPrincipal currentUser = (CustomPrincipal)User;
+
+            communities = DatabaseHelper.Retrieve<Community>(@"
+                select c.CommunityName
+                from Community c
+                where c.OwnerId != @Id
+            ",
+               new SqlParameter("@Id", currentUser.Person.Id));
+
+            return View(communities);
         }
     }
 }
