@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace CommunityToolShedMvc.Controllers
 {
+    [Authorize]
     public class CommunityController : Controller
     {
         // GET: Community

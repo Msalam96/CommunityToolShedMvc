@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace CommunityToolShedMvc.Controllers
 {
+    [Authorize]
     public class ToolController : Controller
     {
         // GET: Tool
@@ -70,5 +71,45 @@ namespace CommunityToolShedMvc.Controllers
             return RedirectToAction("Index", "Community", new { id = communityid });
         }
         
+        public ActionResult Borrow(int communityid, int id)
+        {
+            int communityitemId = DatabaseHelper.ExecuteScalar<int>(@"
+                select ci.id
+                from CommunityItems ci
+                where ci.ItemId = @ItemId and ci.CommunityId = @CommunityId
+            ",
+                new SqlParameter("@ItemId", id),
+                new SqlParameter("@CommunityId", communityid));
+
+            DatabaseHelper.Insert(@"
+                    insert Borrow (
+                        CommunityItemId,  
+                        BorrowerId,
+                        DateRequested
+                    ) values (
+                        @CommunityItemId,  
+                        @BorrowerId,
+                        @DateRequested  
+                    )
+                ",
+                    new SqlParameter("CommunityItemId", communityitemId),
+                    new SqlParameter("BorrowerId", ((CustomPrincipal)User).Person.Id),
+                    new SqlParameter("DateRequested", DateTime.Now));
+
+            //return RedirectToAction("Index", "Community", new { id = communityid });
+            return RedirectToRoute("Default", new { controller = "Community", action = "Index", id = communityid});
+        }
+
+        public ActionResult Remove(int communityid, int id)
+        {
+            DatabaseHelper.Update(@"
+            delete from CommunityItems
+            where ItemId = @ItemId and CommunityId = @CommunityId
+            ",
+                new SqlParameter("@ItemId", id),
+                new SqlParameter("@CommunityId", communityid));
+
+            return RedirectToRoute("Default", new { controller = "Community", action = "Index", id = communityid });
+        }
     }
 }

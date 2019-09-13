@@ -1,4 +1,4 @@
-﻿@model IList<CommunityToolShedMvc.Models.Community>
+﻿@model CommunityToolShedMvc.Models.Person
 
 @{
     ViewBag.Title = "Index";
@@ -6,24 +6,42 @@
 
 <h2>My Communities ⛺</h2>
 
-<div style="width: 35%">
-    <table class="table table-striped table-bordered table-hover table-sm">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Community Name</th>
-                <th>&nbsp;</th>
+<div>
+    <div style="width: 35%">
+        <table class="table table-striped table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Community Name</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            @foreach (var community in Model.Communities)
+            {
+                <tr>
+                    <td scope="col">@community.CommunityName</td>
+                    <td>
+                        @Html.ActionLink("Details", "Index", "Community", new { id = community.Id }, null) 🔎
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div style="width: 35%">
+        <table class="table table-striped table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Borrowed Items</th>
+                </tr>
+            </thead>
+            @foreach (var tool in Model.BorrowedTools)
+            {
+                <tr>
+                    <td scope="col">@tool.ItemName</td>
             </tr>
-        </thead>
-        @foreach (var community in Model)
-        {
-            <tr>
-                <td scope="col">@community.CommunityName</td>
-                <td>
-                    @Html.ActionLink("Details", "Index", "Community", new { id = community.Id }, null) 🔎
-                </td>
-            </tr>
-        }
-    </table>
+            }
+        </table>
+    </div>
 </div>
 
 
