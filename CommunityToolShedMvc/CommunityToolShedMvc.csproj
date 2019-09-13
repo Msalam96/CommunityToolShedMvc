@@ -144,6 +144,7 @@
     <Content Include="Views\Community\Create.cshtml" />
     <Content Include="Views\Community\Join.cshtml" />
     <Content Include="Views\Tool\Create.cshtml" />
+    <Content Include="Views\Tool\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

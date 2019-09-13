@@ -18,5 +18,6 @@ namespace CommunityToolShedMvc.Models
         public string Warning { get; set; }
         public string Age { get; set; }
         public string OwnerName { get; internal set; }
+        public bool Borrowed { get; set; }
     }
 }
