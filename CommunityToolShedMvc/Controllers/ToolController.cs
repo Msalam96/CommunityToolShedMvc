@@ -111,5 +111,47 @@ namespace CommunityToolShedMvc.Controllers
 
             return RedirectToRoute("Default", new { controller = "Community", action = "Index", id = communityid });
         }
+
+        [HttpGet]
+        public ActionResult Edit(int communityid, int id)
+        {
+            Tool tool = new Tool();
+
+            tool = DatabaseHelper.RetrieveSingle<Tool>(@"
+                select ItemName, Usage, Warning, Age
+                from Item
+                where Id = @Id
+            ",
+                new SqlParameter("@Id", id));
+
+            return View(tool);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int communityid, int id, FormCollection collection)
+        {
+            Tool tool = new Tool();
+            tool.Id = id;
+            tool.ItemName = collection.Get("ItemName");
+            tool.Usage = collection.Get("Usage");
+            tool.Warning = collection.Get("Warning");
+            tool.Age = collection.Get("Age");
+
+            DatabaseHelper.Update(@"
+                update Item set
+                    ItemName = @ItemName,
+                    Usage = @Usage,
+                    Warning = @Warning,
+                    Age = @Age
+                where Id = @ItemId
+            ",
+                new SqlParameter("@ItemName", tool.ItemName),
+                new SqlParameter("@Usage", tool.Usage),
+                new SqlParameter("@Warning", tool.Warning),
+                new SqlParameter("@Age", tool.Age),
+                new SqlParameter("@ItemId", id));
+
+            return RedirectToRoute("Default", new { controller = "Community", action = "Index", id = communityid });
+        }
     }
 }

@@ -19,6 +19,7 @@
                 <th scope="col">Warning</th>
                 <th scope="col">Age</th>
                 <th>&nbsp;</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         @foreach (var item in Model.Tools)
@@ -35,6 +36,10 @@
                         {
                             <button class="btn btn-primary btn-sm" type="submit">Remove</button>
                         }
+                    </td>
+                    <td scope="col">
+                        @Html.ActionLink("Edit", "Edit", "Tool", new { communityid = Model.Id, id = item.Id }, new { @class="btn btn-primary btn-sm"} )
+       
                     </td>
                 }
                 else
